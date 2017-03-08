@@ -1,5 +1,5 @@
 import cv2 as cv
-import numpy
+import numpy as np
 from picamera.array import PiRGBArray
 from picamera import PiCamera
 import time
@@ -38,10 +38,24 @@ class processingImage:
 
 	def setImg(self);
 
+	#this function does the morphology of the image for better contour defenition
+	#and noise cancelation
 	def morph(self);
+		erodeElement = cv.getStructuringElement(cv.MORPH_RECT, (3,3))
+		dilateElement = cv.getStructuringElement(cv.MORPH_RECT, (8,8))
+
+		imgKernel_erosion = np.ones((3,3), np.uint8)
+		cv.erode(rawCapture, imgKernel_erosion, iterations = 1)
+
+		imgKernel_dilation = np.ones((8,8), np.uint8)
+		cv.dilate(rawCapture, imgKernel_dilation, iterations = 1)
 
 	def trackObject(self);
+		cv.findContours(getImgTreshold, contours, hierarchy, CV_RETR_EXTERNAL, CHAIN_APPROX_SIMPLE)
 
+		boundRect(contours.size())
+
+		
 	def drawObject(self);
 
 	def __init__(self):
